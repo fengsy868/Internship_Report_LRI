@@ -1,43 +1,54 @@
-\begin{thebibliography}{17}
+\begin{thebibliography}{18}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
 
-\bibitem[Jeff~Bernstein(2004)]{tr069}
-Westell Jeff~Bernstein, 2Wire Tim~Spets.
-\newblock Technical report 069 cpe wan management protocol.
-\newblock Technical Report~2, DSL Forum, 5 2004.
+\bibitem[Olshausen et~al.(1996)]{olshausen1996emergence}
+Bruno~A Olshausen et~al.
+\newblock Emergence of simple-cell receptive field properties by learning a
+  sparse code for natural images.
+\newblock \emph{Nature}, 381\penalty0 (6583):\penalty0 607--609, 1996.
 
-\bibitem[Gerhart(1999)]{homeautomation}
-James Gerhart.
-\newblock \emph{Home Automation and Wiring}.
-\newblock McGraw-Hill Professional, 3 1999.
-\newblock ISBN 0070246742.
+\bibitem[Bridle and Cox(1990)]{bridle1990recnorm}
+John~S Bridle and Stephen Cox.
+\newblock Recnorm: Simultaneous normalisation and classification applied to
+  speech recognition.
+\newblock In \emph{NIPS}, pages 234--240, 1990.
 
-\bibitem[Harper(2003)]{homeautomation1}
-Richard Harper.
-\newblock \emph{Inside the Smart Home}.
-\newblock Springer, 8 2003.
-\newblock ISBN 1852336889.
+\bibitem[Ben-David et~al.(2010)Ben-David, Blitzer, Crammer, Kulesza, Pereira,
+  and Vaughan]{ben2010theory}
+Shai Ben-David, John Blitzer, Koby Crammer, Alex Kulesza, Fernando Pereira, and
+  Jennifer~Wortman Vaughan.
+\newblock A theory of learning from different domains.
+\newblock \emph{Machine learning}, 79\penalty0 (1-2):\penalty0 151--175, 2010.
 
-\bibitem[B{\'e}nilde(2010)]{benilde2010portrait}
-Marie B{\'e}nilde.
-\newblock Portrait de france t{\'e}l{\'e}com en multinationale.
-\newblock \emph{Mani{\`e}re de voir}, 109\penalty0 (2):\penalty0 86--86, 2010.
+\bibitem[Crammer et~al.(2008)Crammer, Kearns, and Wortman]{crammer2008learning}
+Koby Crammer, Michael Kearns, and Jennifer Wortman.
+\newblock Learning from multiple sources.
+\newblock \emph{Journal of Machine Learning Research}, 9\penalty0
+  (Aug):\penalty0 1757--1774, 2008.
 
-\bibitem[Bertolus et~al.(2003)Bertolus, Cedro, and Del~Jesus]{bertolus2003qui}
-Jean-J{\'e}r{\^o}me Bertolus, Jean-Michel Cedro, and Thierry Del~Jesus.
-\newblock \emph{Qui a ruin{\'e} France T{\'e}l{\'e}com?}
-\newblock Hachette litt{\'e}ratures, 2003.
+\bibitem[Wolpaw et~al.(2000)Wolpaw, Birbaumer, Heetderks, McFarland, Peckham,
+  Schalk, Donchin, Quatrano, Robinson, Vaughan, et~al.]{wolpaw2000brain}
+Jonathan~R Wolpaw, Niels Birbaumer, William~J Heetderks, Dennis~J McFarland,
+  P~Hunter Peckham, Gerwin Schalk, Emanuel Donchin, Louis~A Quatrano, Charles~J
+  Robinson, Theresa~M Vaughan, et~al.
+\newblock Brain-computer interface technology: a review of the first
+  international meeting.
+\newblock \emph{IEEE transactions on rehabilitation engineering}, 8\penalty0
+  (2):\penalty0 164--173, 2000.
 
-\bibitem[Jaffr{\'e}(2005)]{jaffre2005afrique}
-Bruno Jaffr{\'e}.
-\newblock En afrique, construire les alternatives aux privatisations.
-\newblock \emph{Benamrane Djilali, Jaffre Bruno et Verschave
-  Fran{\c{c}}ois-Xavier (sous la dir. de.), Les t{\'e}l{\'e}communications
-  entre bien public et marchandise, Paris: Charles-L{\'e}opold Mayer}, 2005.
+\bibitem[Wickelgren(2003)]{wickelgren2003brain}
+Ingrid Wickelgren.
+\newblock Brain researchers try to salvage estrogen treatments.
+\newblock \emph{Science}, 302\penalty0 (5648):\penalty0 1138, 2003.
+
+\bibitem[Ganin and Lempitsky(2014)]{ganin2014unsupervised}
+Yaroslav Ganin and Victor Lempitsky.
+\newblock Unsupervised domain adaptation by backpropagation.
+\newblock \emph{arXiv preprint arXiv:1409.7495}, 2014.
 
 \bibitem[Stiemerling(2008)]{stiemerling2008nat}
 Martin Stiemerling.

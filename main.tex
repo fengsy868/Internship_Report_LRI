@@ -43,11 +43,11 @@
 \begin{center}
 
 %\textsc{\LARGE \univname}\\[0.5cm] % University name
-\textsc{\LARGE Engineering Internship Report}\\[0.1cm]
-{\Large 01/03/2015  $\sim$  01/09/2015}\\[0.5cm] % Thesis type
+\textsc{\LARGE Research Internship Report}\\[0.1cm]
+{\Large 25/04/2016  $\sim$  25/09/2015}\\[0.5cm] % Thesis type
 
 \HRule \\[0.4cm] % Horizontal line
-{\textbf{\huge  \ttitle}}\\[0cm] % Thesis title
+{\textbf{\huge  Deep Learning and Reality Gap}}\\[0cm] % Thesis title
 \HRule \\[2.5cm] % Horizontal line
 
 \begin{figure}[htbp]
@@ -68,9 +68,9 @@
 %\emph{\Large Academic Supervisor:}\\
 %{\examname} \\[2cm]% Author name - remove the \href bracket to remove the link
 
-\large \textit{A report submitted in fulfilment of the requirements\\ for the degree of \degreename}\\[0.3cm] % University requirement text
+\large \textit{A report submitted in fulfilment of the requirements\\ for the degree of Master in Computer Science}\\[0.3cm] % University requirement text
 \textit{at}\\[0.4cm]
-{\Large \groupname}\\[2.5cm] % Research group name and department name
+{\Large Telecom Paristech}\\[2.5cm] % Research group name and department name
 
 {\large \today}\\[4cm] % Date
 %\includegraphics{Logo} % University/department logo - uncomment to place it
@@ -88,16 +88,16 @@
 \supervisors{\addtocontents{toc}{\vspace{1em}} % Add a gap in the Contents, for aesthetics
 \vspace{1cm}
 
-\emph{\Large Industrial Supervisors:}\\[0.5cm]
-{\supname} \\% Supervisor name - remove the \href bracket to remove the link
-Ingénieur Développement, \ \ Orange/IMT/OLPS/SMA/DM2E/CARE\\
-Tel : 04.76.76.42.20\qquad E-mail : \href{mailto:matthieu.anne@orange.com}{matthieu.anne@orange.fr}\\[0.3cm]
+\emph{\Large Scientific Supervisors:}\\[0.5cm]
+{Michele SEBAG} \\% Supervisor name - remove the \href bracket to remove the link
+Head of Équipe A-O - LRI\\
+Tel : 01.69.15.42.33\qquad E-mail : \href{mailto:sebag@lro.fr}{sebag@lri.fr}\\[0.3cm]
 
 \emph{\Large Academic Supervisor:}\\[0.5cm]
-{\examname} \\
-Directeur de EI-SE\\
-Université Pierre et Marie Curie - LIP6\\
-Tel : 01.44.27.96.35\qquad E-mail : \href{mailto:andrea.pinna@lip6.fr}{andrea.pinna@lip6.fr}
+{Albert BIFET} \\
+Associate Professor in Big Data\\
+Télécom ParisTech\\
+\qquad E-mail : \href{mailto:albert.bifet@gmail.com}{albert.bifet@gmail.com}
 }
 
 %----------------------------------------------------------------------------------------
@@ -107,13 +107,13 @@ Tel : 01.44.27.96.35\qquad E-mail : \href{mailto:andrea.pinna@lip6.fr}{andrea.pi
 \cleardoublepage
 
 \acknowledgements{\addtocontents{toc}{\vspace{1em}} % Add a gap in the Contents, for aesthetics
-The internship opportunity I had with CARE group was a great chance for learning and professional development. It’s here at Orange Labs I strengthened my willing to future research careers. Therefore, I consider myself as a very lucky individual as I was provided with an opportunity to be a part of it. I am sincerely grateful for having a chance to meet so many wonderful people and professionals who led me through this six-month internship.
+The internship opportunity I had with TAO group was a great chance for learning and for research experience. It’s here at TAO I strengthened my willing to future research careers. Therefore, I consider myself as a very lucky individual as I was provided with an opportunity to be a part of it. I am sincerely grateful for having a chance to meet so many wonderful people who led me through this five-month internship.
 
-First and foremost, I would like to express my sincere gratitude to my supervisor M. Matthieu ANNE, for the continuous support of my internship, for his patience, motivation, and immense knowledge. His guidance helped me in all the time of research and writing of this report. I could not have imagined having a better superadvisor and mentor for my internship.
+First and foremost, I would like to express my sincere gratitude to my supervisor Mme. Michele SEBAG, for the continuous support of my internship, for her patience, motivation, and immense knowledge. Her guidance helped me in all the time of research and writing of this report. I could not have imagined having a better superadvisor and mentor for my internship.
 
-My sincere thanks also goes to M. Julien Roland, M. Marc Douet, who provided me their knowledge and experience and precious time, only with their help I can get better work enviroment.
+My sincere thanks also goes to M. Gaetan Marceau Caron, who provided me his knowledge and experience and precious time, only with his help I can get better work enviroment.
 
-Last but not the least, I would like to thank all the CARE team members. Thank you for the fabulous leisure time we had together!
+Last but not the least, I would like to thank all the TAO team members. Thank you for the fabulous leisure time we had together!
 }
 
 %----------------------------------------------------------------------------------------
@@ -146,13 +146,12 @@ Last but not the least, I would like to thank all the CARE team members. Thank y
 % Include the chapters of the thesis as separate files from the Chapters folder
 % Uncomment the lines as you write the chapters
 
-\input{Chapters/Chapter1}
-\input{Chapters/Chapter2}
-\input{Chapters/Chapter3}
-\input{Chapters/Chapter4}
-\input{Chapters/Chapter5}
-\input{Chapters/Chapter6}
-\input{Chapters/Chapter7}
+\input{Chapters/Chapter1} %introduction
+\input{Chapters/Chapter2} %contexte and objectif
+\input{Chapters/Chapter3} %state of art
+\input{Chapters/Chapter4} %program
+\input{Chapters/Chapter5} %results
+\input{Chapters/Chapter6} %discussion
 
 %----------------------------------------------------------------------------------------
 %	THESIS CONTENT - APPENDICES
@@ -188,43 +187,43 @@ Last but not the least, I would like to thank all the CARE team members. Thank y
 \bibliography{Bibliography} % The references (bibliography) information are stored in the file named "Bibliography.bib"
 
 \addtocontents{toc}{\vspace{1em}} % Add a gap in the Contents, for aesthetics
-
-%----------------------------------------------------------------------------------------
-%	ABSTRACT PAGE
-%----------------------------------------------------------------------------------------
-\setstretch{1.5} % Reset the line-spacing to 1.5 for body text (if it has changed)
-
-\clearpage % Start a new page
-
-\frontmatter % Use roman page numbering style (i, ii, iii, iv...) for the pre-content pages
-
-\abs{\addtocontents{toc}{\vspace{1em}} % Add a gap in the Contents, for aesthetics
-
-The TR-069 developed by Orange Labs allows to manage communication between customer-premises equipment (CPE) and Auto Configuration Server (ACS).It offers the use of a set of services administration, monitoring and diagnosis while avoiding the problems associated with hardware and software diversity.
-
-Orange Homelive is the solution to manage the home on the mobile. From a single application, Homelive allows to interact with connected compatiable objects in the house. It proposes the Smart Home solution with a set-top box--Homelive.
-
-Z-Wave is a wireless protocol designed for home automation (lighting, private heating) and so-called Smart Home. Z-Wave was bought by the company Americane Sigma Designs in 2008. It is optimized for low bandwidth exchanges and devices on battery. It can be easily integrated in consumer electronics, including remote controls, smoke detectors and safety sensors.
-
-During the six-month internship, my main mission was to adapt the TR-069 Client at the Homelive box by resolving the incompatibility and implementing the RPC methods. Also, integrates the new Z-Wave data model in the TR-069 Client by contacting with the Luup firmware of the Homelive Box. With my internship result, Orange will be allowed to manage Homelive from distance to reduce the expenses on support services.
-}
-
-%----------------------------------------------------------------------------------------
+%
+%%----------------------------------------------------------------------------------------
+%%	ABSTRACT PAGE
+%%----------------------------------------------------------------------------------------
+%\setstretch{1.5} % Reset the line-spacing to 1.5 for body text (if it has changed)
+%
+%\clearpage % Start a new page
+%
+%\frontmatter % Use roman page numbering style (i, ii, iii, iv...) for the pre-content pages
+%
+%\abs{\addtocontents{toc}{\vspace{1em}} % Add a gap in the Contents, for aesthetics
+%
+%The TR-069 developed by Orange Labs allows to manage communication between customer-premises equipment (CPE) and Auto Configuration Server (ACS).It offers the use of a set of services administration, monitoring and diagnosis while avoiding the problems associated with hardware and software diversity.
+%
+%Orange Homelive is the solution to manage the home on the mobile. From a single application, Homelive allows to interact with connected compatiable objects in the house. It proposes the Smart Home solution with a set-top box--Homelive.
+%
+%Z-Wave is a wireless protocol designed for home automation (lighting, private heating) and so-called Smart Home. Z-Wave was bought by the company Americane Sigma Designs in 2008. It is optimized for low bandwidth exchanges and devices on battery. It can be easily integrated in consumer electronics, including remote controls, smoke detectors and safety sensors.
+%
+%During the six-month internship, my main mission was to adapt the TR-069 Client at the Homelive box by resolving the incompatibility and implementing the RPC methods. Also, integrates the new Z-Wave data model in the TR-069 Client by contacting with the Luup firmware of the Homelive Box. With my internship result, Orange will be allowed to manage Homelive from distance to reduce the expenses on support services.
+%}
+%
+%%----------------------------------------------------------------------------------------
 %	RÉSUMÉ PAGE
 %----------------------------------------------------------------------------------------
-
-\clearpage % Start a new page
-
-\resume{\addtocontents{toc}{\vspace{1em}} % Add a gap in the Contents, for aesthetics
-
-Le TR-069 développé par Orange Labs permet de gérer la communication entre un équipement terminal du réseau local du client et un servert d'autoconfiguration associé dans un même réseau apprtenant à l'opérateur.Il offre à l'utilisation d'un ensemble de services d'administration, de contrôle et de diagnostic tout en évitant les problèmes liés aux diversités matérielles et logicielles.
-
-Orange Homelive est la solution pour piloter sa maison depuis son mobile. A partir d'une seule application, Homelive permet d'interagir avec les objets connectés compatiables dans la maison. Il donne la solution de Smart Home avec un set-top box--Homelive.
-
-Z-Wave est un protocole radio conçu pour la domotique(éclairage, chauffrage) et ce qu'on appelle l'Habitat comminicant. En 2008 Z-Wave a été rachetée par la société américane Sigma Designs. Il est optimisé pour des échanges à faible bande passante et des appareils sur pile ou alimentés électroniquement. Il peut être facilement intégrée dans les produits électroniques de consommation, y compris télécommandes, les détecteurs de fumée et capteurs de sécurité.
-
-Pendant ces six mois de stage, ma mission principale a été d'adapter le TR-069 Client au Homelive box, en résoulvant les incompatibilité et implémentant les RPC méthodes. Ainsi que intégre le nouveau data modèle Z-Wave dans le TR-069 Client en communiquant avec le firmware Luup dans Homelive Box. Avec mon résultat de stage, Orange va être autorisé à gérer Homelive à distance pour réduire les dépenses sur les services de soutien.
-}
+%
+%\clearpage % Start a new page
+%
+%\resume{\addtocontents{toc}{\vspace{1em}} % Add a gap in the Contents, for aesthetics
+%
+%Le TR-069 développé par Orange Labs permet de gérer la communication entre un équipement terminal du réseau local du client et un servert d'autoconfiguration associé dans un même réseau apprtenant à l'opérateur.Il offre à l'utilisation d'un ensemble de services d'administration, de contrôle et de diagnostic tout en évitant les problèmes liés aux diversités matérielles et logicielles.
+%
+%Orange Homelive est la solution pour piloter sa maison depuis son mobile. A partir d'une seule application, Homelive permet d'interagir avec les objets connectés compatiables dans la maison. Il donne la solution de Smart Home avec un set-top box--Homelive.
+%
+%Z-Wave est un protocole radio conçu pour la domotique(éclairage, chauffrage) et ce qu'on appelle l'Habitat comminicant. En 2008 Z-Wave a été rachetée par la société américane Sigma Designs. Il est optimisé pour des échanges à faible bande passante et des appareils sur pile ou alimentés électroniquement. Il peut être facilement intégrée dans les produits électroniques de consommation, y compris télécommandes, les détecteurs de fumée et capteurs de sécurité.
+%
+%Pendant ces six mois de stage, ma mission principale a été d'adapter le TR-069 Client au Homelive box, en résoulvant les incompatibilité et implémentant les RPC méthodes. Ainsi que intégre le nouveau data modèle Z-Wave dans le TR-069 Client en communiquant avec le firmware Luup dans Homelive Box. Avec mon résultat de stage, Orange va être autorisé à gérer Homelive à distance pour réduire les dépenses sur les services de soutien.
+%}
 
 %----------------------------------------------------------------------------------------
 \end{document}
