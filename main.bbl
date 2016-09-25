@@ -1,4 +1,4 @@
-\begin{thebibliography}{11}
+\begin{thebibliography}{14}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -75,5 +75,21 @@ Xavier Glorot, Antoine Bordes, and Yoshua Bengio.
   learning approach.
 \newblock In \emph{Proceedings of the 28th International Conference on Machine
   Learning (ICML-11)}, pages 513--520, 2011.
+
+\bibitem[Bengio(2009)]{bengio2009learning}
+Yoshua Bengio.
+\newblock Learning deep architectures for ai.
+\newblock \emph{Foundations and trends{\textregistered} in Machine Learning},
+  2\penalty0 (1):\penalty0 1--127, 2009.
+
+\bibitem[Liou et~al.(2008)Liou, Huang, and Yang]{liou2008modeling}
+Cheng-Yuan Liou, Jau-Chi Huang, and Wen-Chie Yang.
+\newblock Modeling word perception using the elman network.
+\newblock \emph{Neurocomputing}, 71\penalty0 (16):\penalty0 3150--3157, 2008.
+
+\bibitem[Kingma and Welling(2013)]{kingma2013auto}
+Diederik~P Kingma and Max Welling.
+\newblock Auto-encoding variational bayes.
+\newblock \emph{arXiv preprint arXiv:1312.6114}, 2013.
 
 \end{thebibliography}
