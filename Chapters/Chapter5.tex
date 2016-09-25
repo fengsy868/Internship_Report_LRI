@@ -4,217 +4,155 @@
 
 \label{Chapter5} % For referencing the chapter elsewhere, use \ref{Chapter5}
 
-\lhead{Chapter 5. \emph{TR-069 Client}} % This is for the header on each page - perhaps a shortened title
+\lhead{Chapter 5. \emph{Experiments and Results}} % This is for the header on each page - perhaps a shortened title
 
-\lstdefinestyle{DOS}
-{
-    backgroundcolor=\color{black},
-    basicstyle=\scriptsize\color{white}\ttfamily
-    numbers=none,
-    numbersep=8pt,                   % how far the line-numbers are from the code
-    numberstyle=\tiny\color{white}, % the style that is used for the line-numbers
-    stepnumber=1                    % the step between two line-numbers. If it's 1, each line will be numbered
-}
 %----------------------------------------------------------------------------------------
-\lstdefinestyle{C}
-{
-  morekeywords={export}
-}
-%----------------------------------------------------------------------------------------
-TR-069 Client is implemented by Orange at 2008, but is a generic version for all potential devices. The first part of my internship is to make TR-069 Client for Homelive Box. To be able to provide a generic TR-069 module which is easily portable on different devices, it satisfy the following points:
 
+%----------------------------------------------------------------------------------------
+There are two principle parts for my experiments. First is to test the EEG data with an autoencoder(didn't add the gradient reversal branch), to see the reconstruction error in order to decide the hidden layer units and other hyper-parameters for training. Second, using all the two sessions EEG data and add the gradient reversal branch to fully built the DANN, and see the performance of the neural network for our objectives.
+\section{Architecture of the Neural Network}
+For a neural network, first thing how to decide is the architecture of our neural network, as the input layer and output layer architecture have already been fixed(size 56). Two things left to decide:
+\begin{enumerate}
+	\item Number of hidden layers
+	\item Number of units in a hidden layer
+\end{enumerate}
+
+As we know, more hidden layers in a neural network will always get better performance like lower mean squared error for reconstruction, but beside, it will always consume more computation time. So choosing the architecture is a trade-off between performance and computation time. In fact, we found that for a architecture with more than one hidden layer, the computation time will be several hours for one training, but we need also to vary the number of hidden units in each layer. In order to do more experiments, we choose at last the architecture like 56-n-56 ($ n \in [1,56] $).
+
+\section{Learning Rate Strategy}
+In the training phase of an neural network, the hyper parameter affecting the computation time and the converge speed is the learning rate $ \mu $. The more larger learning rate is, the faster will the neural network trains; the smaller learning rate is, the more accurate the result will be. Instead of setting an constant learning rate, we can adjust the value of learning rate related to the training status. For example, when the error isn't stable, we can set a larger learning rate to accelerate the descent; when the error become stable, we can set a smaller learning rate to let the result more stable.
+
+Tracing the result error with every epoch of training can also help us to determine the maximum iteration needed for converge, so we can find a optimal point between the computation time and the performance.
+
+\subsection{Learning Rate Strategy for Auto-encoder}
+For the auto-encoder without the gradient reversal branch, there are several strategy of learning rate strategy proposed by Dr. Sebag and Dr. Gaetan. Which are:
+\begin{enumerate}
+	\item Exp1: constant learning rate, $ \mu = 0.1 $
+	\item Exp2: constant learning rate, $ \mu = 1 $
+	\item Exp3: reciprocal of square of epoch number, $ \mu(i_{epoch}) = \frac{1}{\sqrt{i_{epoch}}}$
+	\item Exp4: reciprocal of epoch number,  $ \mu(i_{epoch}) = \frac{1}{i_{epoch}} $
+	\item Exp5: adaptive learning rate, in this strategy, we will adjust the learning rate by comparing the current loss with previous loss,\begin{itemize}
+		\item if the error decreases, multiply the previous learning rate by 1.2
+		\item if the error increases, divide the previous learning rate by 2
+	\end{itemize}
+\end{enumerate}
+
+The result is shown at \fref{fig:3}. The structure of this experiments is 56-5-56, max epoch = 2000, mini-batch size is 50. The training time for each experiment is 40 mins.
+
+The training set we use are example [1,6000] from subject 1 session 1 and valid set are examples [6001,12000]. X axis is the number of epoch and Y axis is the training MSE.
+
+We can see that experiment 1 converges very fast but with a high MSE loss. Experiment 2 are about to converging after 2000 epochs and the MSE loss is small, this looks an good strategy but it takes too much time to converge.
+
+Experiment 3 didn't converge after 2000 epoch and the MSE loss is large. Expriment 4 didn't converge and the MSE loss is average. Experiment 5 which using the adaptive schedule converges after 300 epoch with a very small MSE loss.
+
+From the schema we can tell that the adaptive schedule is the best learning rate strategy because it converges very fast (\textless 300 epochs) and get the smallest MSE loss, except the MSE loss oscillates at the beginning of the training which is normal because the learning rate oscillates a lot at the beginning.
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=15cm]{Figures/3.png}
+	\caption[Train MSE in function with the Epoch number for different learning rate strategy in Auto-encoder]{Train MSE in function with the Epoch number for different learning rate strategy in Auto-encoder}
+	\label{fig:3}
+\end{figure}
+\subsection{Learning Rate Strategy for DANN}
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=15cm]{Figures/4.png}
+	\caption[Train MSE in function with the Epoch number for different learning rate strategy in DANN]{Train MSE in function with the Epoch number for different learning rate strategy in DANN}
+	\label{fig:4}
+\end{figure}
+As the same above, we have also defined several strategy for \textbf{DANN}, those are:
+\begin{enumerate}
+	\item Exp1: constant learning rate, $ \mu = 1 $
+	\item Exp2: constant learning rate, $ \mu = 0.1 $
+	\item Exp3: reciprocal of square of epoch number, $ \mu(i_{epoch}) = \frac{1}{\sqrt{i_{epoch}}}$
+	\item Exp4: reciprocal of square of epoch number, $ \mu(i_{epoch}) = \frac{0.1}{\sqrt{i_{epoch}}}$
+	\item Exp5: reciprocal of epoch number, $ \mu(i_{epoch}) = \frac{1}{\sqrt{i_{epoch}}}$\
+	\item Exp6: reciprocal of epoch number, $ \mu(i_{epoch}) = \frac{0.1}{\sqrt{i_{epoch}}}$
+	\item Exp7: adaptive learning rate schudule
+\end{enumerate}
+
+The results are shown in \fref{fig:4}.
+
+
+The conclusion is pretty as like in the auto-encoder, adaptive strategy still works the best from all the strategies.
+
+In the following experiments, I will use adaptive strategy in the training phase.
+\section{Auto-encoder experiments results}
+
+
+First experiments is to see the impact of the hidden layer  units for an auto-encoder, results shown at \fref{fig:1} and \fref{fig:2}.
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=10cm]{Figures/1.png}
+	\caption[Train reconstruction error with different hidden layer units]{Train reconstruction error with different hidden layer units}
+	\label{fig:1}
+\end{figure}
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=10cm]{Figures/2.png}
+	\caption[Valid reconstruction error with different hidden layer units]{Valid reconstruction error with different hidden layer units}
+	\label{fig:2}
+\end{figure}
+
+This schema gives the MSE error of the auto-encoder with different hidden layer units. The network is trained with mini-batch size=50, learning rate is adaptive, max epoch=1000, structure is 56-n-56.The n I tested varies from 1 to 56. Result is average of 5 runs. The training time for one value of hidden layer units are 50 mins, so the time total used for training is 46 hours.
+
+The training set we use are example[1,6000] from subject 1 session 1 and valid set are examples [6001, 12000] from subject 1 session 1. So in the schema, x axis is the hidden layer units from 1 - 56, on the y axis is the training and valid MSE error.
+
+We can see that the MSE basically decrease when the hidden layer units increases, which is normal for an auto-encoder. Else, we can see before n=8, the error is more large than n>8, which means EEG data is more than 4 dimensions, but the error is basically same if n bigger than 10. For when n=56, ideally, the error should be 0 if we initialize the weight parameters in a matrix like:
+\[ 
+\begin{pmatrix}
+1 & 0 & \cdots & 0 \\
+0 & 1 & \cdots & 0 \\
+\vdots  & \vdots  & \ddots & \vdots  \\
+0 & 0 & \cdots & 1
+\end{pmatrix} 
+\]
+
+From the results, we can see that it's better to choose the n larger than 10 to ensure that we can reconstruct the initial information from EEG data.
+
+\section{DANN experiments results}
+After adding the gradient reversal branch to the auto-encoder, at every back-propagation, the parameters will be updated both by the two branch (label predictor and domain predictor). Label predictor is for minimize the reconstruction loss of the EEG data, where domain predictor is aims at maximizing the domain classification error. So the result will be a trade-off between this two predictor.
+
+Two parameters will be varied in the following experiments:
 \begin{itemize}
-  \item Written in ANSI C
-  \item Small memory footprint
-  \item Provide generic API to access device specific modules
-  \item Provide Makefiles to build the binary
-  \item Provide system traces on module activity
-\end{itemize}
-
-On a CPE, there are two modules that are mentioned all along this document and which are responsible of
-the CWMP:
-\begin{itemize}
-  \item \textbf{TR-069 Agent}: This agent is responsible of the CWMP sessions. It initializes them with the inform message, realizes the ACS command(s) and execute some feedback command (notably after a firmware upgrade).
-  \item \textbf{TR-069 Server}: This is a small HTTP server which listens of the WAN interface for an ACS solicitation (in TR-069, it is known as “connection request”). On a valid connection request, the TR-069 server contacts the TR-069 agent for starting a CWMP session with the ACS.
-\end{itemize}
-%----------------------------------------------------------------------------------------
-\section{Architecture of TR-069 Client}
-The TR069 Generic Agent is composed of several modules and interfaces. Some modules are generic and can be ported with no modification. Other modules are platform specific (specific libraries usage, specific device API to get/set values, ...) and must implement services declared into generic interfaces.
+	\item The number of units in the hidden layer, this parameter helps us to find the optimal architecture of the DANN to balance the computation time and the performance
+	\item The parameter lambda $\lambda$ in the gradient reversal layer. $\lambda$ means how much the domain predictor will affect the gradient descent in the back-propagation.
+\end{itemize}  
 
 \begin{figure}[htbp]
 	\centering
-		\includegraphics[width=12cm]{Figures/structuretr069.png}
-	\caption[TR-069 Structure]{TR-069 Structure}
-	\label{fig:tr069}
+	\includegraphics[width=15cm]{Figures/5.png}
+	\caption[Train reconstruction error with different hidden layer units in DANN]{Train reconstruction error with different hidden layer units in DANN}
+	\label{fig:5}
 \end{figure}
-
-For each module:
-\begin{itemize}
-  \item \textbf{DM\_ Engine} : In charge of the TR-069 logic,
-  \item \textbf{DM\_ Com} : Handles the HTTP, SOAP and SSL Protocol with the ACS (Auto Configuration Server),
-  \item \textbf{DM\_ DeviceAdapter} : Adaptation layer between the DM_Engine and the device system. It allows the implementation of the RPC commands (Get Parameter Value, Set Parameter Value, Reboot, Download, ...),
-  \item \textbf{DM\_ Database} : Stores the data using an available storage solution on the device (or thanks to simple file storage),
-  \item \textbf{HTTP Client} : Sets up / releases the HTTP connection with the ACS and sends / receives SOAP messages. The HTTP Client also handles SSL protocol,
-  \item \textbf{HTTP SERVER} : Perform ACS Connection Request response,
-  \item \textbf{XML Parser} : Decode / encode SOAP messages.
-\end{itemize}
-
-The figure below shows the file tree of the project, TR-069 Client defines all functions and APIs at each module. In consideration of easily ported to other devices, it put all target-related implementations in the folder \textit{dm\_target\_implementation}.
 
 \begin{figure}[htbp]
 	\centering
-		\includegraphics[width=8cm]{Figures/tr069_files.png}
-	\caption[TR-069 File Tree Structure]{TR-069 File Tree Structure}
-	\label{fig:tr069file}
+	\includegraphics[width=15cm]{Figures/7.png}
+	\caption[Valid reconstruction error with different hidden layer units in DANN]{Valid reconstruction error with different hidden layer units in DANN}
+	\label{fig:7}
 \end{figure}
 
-In the folder \textit{dm_taget_implementation}, different target has been defined, you can implement the APIs and Modules for different devices, and you specifie the target to compile in compilation, like:
+These schema(\fref{fig:5} and \fref{fig:7}) gives the train and valid reconstruction error with different hidden layer units in DANN. The network is trained with mini-batch size=50, learning rate is adaptive, max epoch=300, structure is 56-n-56.The n I tested varies from 1 to 56. Result is average of 5 runs. The training time for one value of hidden layer units are 70 mins.
 
-\begin{lstlisting}[style=DOS][language=bash]
-  $ make Target=TargetName TRACE_LEVEL=7 DEBUG=Y
-  $ make clean Target=TargetName
-\end{lstlisting}
+The source domain training set we use are example[1,6000] from subject 1 session 1 and valid set are examples [6001, 12000] from subject 1 session 1. The target domain training set are examples [1,6000] from subject 1 session 2, valid set are examples [6001, 12000] from subject 1 session 2.In the schema, x axis is the hidden layer units from 1 - 56, on the y axis is the training and valid MSE error.
 
-A csv file must be created for each new platform. This CSV file describes the data model parameters used by TR069 Agent and the default values for the TR069 specifics parameters. This target dependent CSV file is stored into \\\textit{dm\_target\_implementation/MYNEWDEVICE/dm\_dm\_target\_data/dm\_csv} directory.
+For $\lambda = 1$, the MSE loss is pretty stable except when $n \in [1,8]$. With the value of $\lambda$ increases, the MSE loss become more oscillated. But the base losses are basically the same, when the hidden layer units number are large, it can sometimes reach a smaller MSE loss. In our inference, the MSE loss should decreases with the hidden layer units increases, the result didn't totally accord with our inference but shows the same tendency. 
 
-The CSV file is only read during the first system start up (or after a factory reset) and is used to generate the TR069
-database (i.e. parameters.data and parameters.data\~{} files)
-
-%----------------------------------------------------------------------------------------
-
-\section{Problems and Solutions}
-
-When ported the TR-069 Client to Homelive, we have encountered several problems before it can perfectly run on Homelive Box.
-
-%----------------------------------------------------------------------------------------
-
-\subsection{IP Address Error}
-The first problem is IP Address Error. At every start up of the TR-069 Client, the module will have to detect the IP address of the box, and use it to build connection between STUN server and CPE. But when executing, the TR-069 client can't detect the IP address, so I have located the code which are responsible for IP detection,
-
-\begin{lstlisting}[mathescape]
-    static const char* ETH_INTERFACE = "eth0";
-    struct ifaddrs *myaddrs = NULL, *ifa = NULL;
-    struct sockaddr_in *s4 = NULL;
-    int  status;
-    /* but must be big enough for an IPv6 address (e.g. 3ffe:2fa0:1010:ca22:020a:95ff:fe8a:1cf8) */
-    char buf[64];
-    memset((void *) buf,  0x00, sizeof(buf));
-
-    status = getifaddrs(&myaddrs);
-    if (status == 0)
-    {
-       for (ifa = myaddrs; ifa != NULL; ifa = ifa->ifa_next)
-       {
-          if ( (ifa->ifa_addr != NULL)
-             && ((ifa->ifa_flags & IFF_UP) != 0)
-             && (ifa->ifa_addr->sa_family == AF_INET) )
-          {
-             s4 = (struct sockaddr_in *)(ifa->ifa_addr);
-             if ( (inet_ntop(ifa->ifa_addr->sa_family, (void *)&(s4->sin_addr), buf, sizeof(buf)) != NULL)
-                && (strcmp(ifa->ifa_name, ETH_INTERFACE)==0) )
-             {
-                ipAddress = strdup(buf);
-                break;
-             }
-          }
-       }
-    }
-\end{lstlisting}
-
-In general, the first Internet address should be \textit{eth0}, but in Homelive Box, if you verify with command
-\begin{lstlisting}[style=DOS][language=bash]
-  $ ifconfig -a
-\end{lstlisting}
-
-The default Internet interface is "br-lan", which is specific in OpenWRT system, which is bridged Virtual Network Interface, used to make multiple virtual or physical network interfaces act as if they were just one network interface (quasi the opposite of VLANs).
-
-So the solution is to change the macro definition of \textit{ETH\_INTERFACE} from \textit{``eth0''} to \textit{``br-lan''}. After the modification, the program can success finding the IP address.
-%----------------------------------------------------------------------------------------
-\subsection{STUN Initialization}
-
-When using the default data model provided, TR-069 Client can't build connection with STUN server. By looking into the log file, the problem aims to no STUN data model has been settled. The solution is to add the items which describe STUN parameters as follow:
-\begin{lstlisting}[mathescape]
-    ManagementServer.UDPConnectionRequestAddress;STRING;0;0;1;2;1;0;;0;0;0
-    ManagementServer.UDPConnectionRequestAddressNotificationLimit;UINT;0;1;0;0;0;0;;0;0;0
-    ManagementServer.STUNEnable;BOOLEAN;0;1;0;0;1;0;;1;0;0
-    ManagementServer.STUNServerAddress;STRING;0;1;0;0;1;0;;161.105.161.211;0;0
-    ManagementServer.STUNServerPort;INT;0;1;0;0;1;0;;3478;0;0
-    ManagementServer.STUNUsername;STRING;0;1;0;0;0;0;;test;0;0
-    ManagementServer.STUNPassword;STRING;0;1;0;0;0;0;;1234;0;0
-    ManagementServer.STUNMaximumKeepAlivePeriod;INT;0;1;0;0;0;0;;400;0;0
-    ManagementServer.STUNMinimumKeepAlivePeriod;UINT;0;1;0;0;0;0;;10;0;0
-    ManagementServer.NATDetected;BOOLEAN;0;0;1;2;1;0;;0;0;0
-\end{lstlisting}
-%----------------------------------------------------------------------------------------
-\subsection{Memory Alignment Error}
-After the modifications above, every time when running the TR-069 Client, after 2 seconds, the program crash and report \textit{bus error}, a bus error is a fault raised by hardware, notifying an operating system (OS) that a process is trying to access memory that the CPU cannot physically address: an invalid address for the address bus, hence the name. In modern use on most architectures these are much rarer than segmentation faults, which occur primarily due to memory access violations: problems in the logical address or permissions.
-
-Because the TR-069 is generated by cross-compiling, some platforms (in our case MIPS64) can only read or write ints from addresses that are an even multiple of 8 bytes, otherwise they segfault. Even the ones that can handle arbitrary alignments are slower dealing with unaligned data (they have to fetch twice to get both halves), so the compiler will often pad structures to align variables. Treating structures as a lump of data that can be sent to disk or across the network thus requires extra work to ensure a consistent representation.
-
-In the source code, there are \textit{struct} defined like:
-\begin{lstlisting}[mathescape]
-    typedef struct _DM_ENG_Parameter
-    {
-    	bool writable; //1 byte
-    	char* name;  // 4 bytes
-      int minValue; // 4 bytes
-
-      ....
-
-      struct _DM_ENG_Parameter* next;
-    } __attribute((packed)) DM_ENG_Parameter;
-\end{lstlisting}
-
-
-In a 32bits processor, the first three elements of the structure will be aligned like \fref{fig:side:a}. But when using the attribute (packed), the memory will become \fref{fig:side:b} to save the memory space.
-
-\begin{figure}
-\begin{minipage}[t]{0.5\linewidth}
-\centering
-\includegraphics[width=4cm]{Figures/alignement1.png}
-\caption{Memory Algnement under 32bits system}
-\label{fig:side:a}
-\end{minipage}%
-\begin{minipage}[t]{0.5\linewidth}
-\centering
-\includegraphics[width=4cm]{Figures/alignement2.png}
-\caption{Memory Algnement under 32bits system with packed}
-\label{fig:side:b}
-\end{minipage}
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=15cm]{Figures/8.png}
+	\caption[Train Domain BCE loss with different hidden layer units in DANN]{Domain BCE loss with different hidden layer units in DANN}
+	\label{fig:6}
+\end{figure}
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=15cm]{Figures/6.png}
+	\caption[Valid Domain BCE loss with different hidden layer units in DANN]{Domain BCE loss with different hidden layer units in DANN}
+	\label{fig:8}
 \end{figure}
 
+These schema(\fref{fig:6} and \fref{fig:8}) gives the train and valid domain BCE loss with different hidden layer units in DANN. The network is trained with mini-batch size=50, learning rate is adaptive, max epoch=300, structure is 56-n-56.The n I tested varies from 1 to 56. Result is average of 5 runs. The training time for one value of hidden layer units are 70 mins.
 
-Under the Homelive architecture, it can only read data from address that is multiple of 4, so when the program tries to read value of name, the address is 0x0001 which is not an valid address, it reports the \textit{bus error}. To solve this bus error, the easiest way is to delete the attribute \textit{packed}, and then the compilator will automatic shift the address to meet the requirements.
+The source domain training set we use are example[1,6000] from subject 1 session 1 and valid set are examples [6001, 12000] from subject 1 session 1. The target domain training set are examples [1,6000] from subject 1 session 2, valid set are examples [6001, 12000] from subject 1 session 2.In the schema, x axis is the hidden layer units from 1 - 56, on the y axis is the training and valid MSE error.
 
-%----------------------------------------------------------------------------------------
-\section{RPC methods}
-The next step is to verify and implement all the RPC methods, after verification:
-\begin{center}
-  \begin{tabular}{@{} cc @{}}
-    \toprule
-    RPC Method & Result \\*
-    \midrule
-    Connection Request & Yes \\
-    Get RPC Methods & Yes \\
-    Set Parameter Values  & Yes\\
-    Get Parameter Values  & Yes\\
-    Set Parameter Attributes  & Yes\\
-    Get Parameter Attributes  & Yes\\
-    Get Parameter Names & Yes\\
-    Add Object  & Yes\\
-    Delete Object & Yes\\
-    Reboot & No\\
-    Downloaded  & Yes\\
-    Factory Reset & Yes\\
-    Schedule Inform & Yes\\
-    Upload & Yes\\
-    \bottomrule
-  \end{tabular}
-%	\caption[Homelive Box of Orange]{Homelive Box of Orange}
-\end{center}
-
-When we call \textit{reboot} from ACS, the TR-069 turns out only reboot the program but not the whole box. To repair this, after located the reboot function, we added one line at the end of the function to let the program call the box to reboot after 5 seconds (which is for the TR-069 to shutdown all the process).
-\begin{lstlisting}[mathescape]
-  /*Reboot system after 5 seconds*/
-  system("(sleep 5 && reboot) &");
-\end{lstlisting}
+For $\lambda = 1$, the domain BCE loss is positively correlated with the hidden layer units. When the $\lambda$ increases from 1 to 1000, the domain BCE loss become more stable regarding the hidden units number. That is to say the influence of the architecture become smaller. When the domain BCE loss become 27, than means the domain classifier has a high error rate, so that EEG data from the two sessions become indiscriminate which is our purpose.

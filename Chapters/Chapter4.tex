@@ -6,19 +6,27 @@
 
 \lhead{Chapter 4. \emph{Program}} % This is for the header on each page - perhaps a shortened title
 %----------------------------------------------------------------------------------------
-\lstdefinestyle{DOS}
-{
-	backgroundcolor=\color{black},
-	basicstyle=\scriptsize\color{white}\ttfamily
-	numbers=none,
-	numbersep=8pt,                   % how far the line-numbers are from the code
-	numberstyle=\tiny\color{white}, % the style that is used for the line-numbers
-	stepnumber=1                    % the step between two line-numbers. If it's 1, each line will be numbered
-}
-%----------------------------------------------------------------------------------------
-\lstdefinestyle{C}
-{
-	morekeywords={export}
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.9,0.9,0.9}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+\definecolor{mybrown}{RGB}{178,34,34}
+\lstset{language=C++,
+	backgroundcolor=\color{mygray},
+	numbers=left,                    % possible values are (none, left, right)
+	numbersep=-8pt,                   % how far the line-numbers are from the code
+	numberstyle=\tiny\color{mybrown}, % the style that is used for the line-numbers
+	stepnumber=1,                    % each line will be numbered
+	morekeywords={*},
+	keywordstyle=\color{blue},
+	stringstyle=\color{mymauve},
+	commentstyle=\color{mygreen},
+	morecomment=[l][\color{magenta}]{\#},
+	basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+	keepspaces=false,                 % keeps spaces in text, useful for keeping indentation of code
+	columns=flexible,
+	breaklines=true
+	rulesepcolor=\color{mygray},
+	rulecolor=\color{mygray}
 }
 %----------------------------------------------------------------------------------------
 The approach we proposed for this subject is using domain adaptation to eliminate the variability problem in the EEG data. In this chapter, firstly I will present the structure of EEG data we used for this internship. Then I will present the adaption of the DANN structure to our case. Thirdly is defining the criteria for our Deep Neural Network.
@@ -91,3 +99,23 @@ In the program, I have defined three separate neural network, which are:
 
 Then in the training phase, the EEG data will be used as input data for Encoder, the output of Encoder will then be used as the input data of Decoder and Gradient reversal layer.
 
+Here below is the Lua code used to build our neural network.
+\begin{lstlisting}[mathescape]
+	//Definition of the encoder
+	featExtractor = nn.Sequential()
+	featExtractor:add(nn.Linear(nInputEEG,opt.hiddenLayerUnits))
+	featExtractor:add(nn.Sigmoid())
+	
+	//Definition of the decoder
+	labelPredictor = nn.Sequential()
+	labelPredictor:add(nn.Linear(opt.hiddenLayerUnits,nInputEEG))
+	labelPredictor:add(nn.Sigmoid())
+	
+	//Definition of the domain classifier
+	domainClassifier = nn.Sequential()
+	domainClassifier:add(nn.GradientReversal(opt.domainLambda))
+	domainClassifier:add(nn.Linear(opt.hiddenLayerUnits,1))
+	domainClassifier:add(nn.Sigmoid())
+
+
+\end{lstlisting}
